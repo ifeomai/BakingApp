@@ -1,4 +1,4 @@
-package com.ifeomai.apps.bakingapp.model;
+package com.ifeomai.apps.bakingapp.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

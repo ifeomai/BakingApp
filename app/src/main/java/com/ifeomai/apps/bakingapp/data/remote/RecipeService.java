@@ -1,6 +1,6 @@
-package com.ifeomai.apps.bakingapp.data;
+package com.ifeomai.apps.bakingapp.data.remote;
 
-import com.ifeomai.apps.bakingapp.model.Recipe;
+import com.ifeomai.apps.bakingapp.data.model.Recipe;
 
 import java.util.List;
 

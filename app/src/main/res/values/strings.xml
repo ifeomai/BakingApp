@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">BakingApp</string>
+    <string name="recipe_item_servings">Serves: %d</string>
+    <string name="recipe_item_image_description">recipe image</string>
+    <string name="ingredient_quantity">Quantity: %s %s</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="steps">Steps</string>
+    <string name="step_item_label">Step %s: %s</string>
+    <string name="ingredient_item_name">%d. %s</string>
+    <string name="step_icon_description">step icon</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="title_activity_baking_app_config">BakingAppConfigActivity</string>
+    <string name="select_recipe_label">Select recipe to show in widget</string>
 </resources>
