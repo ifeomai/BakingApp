@@ -28,6 +28,7 @@ dependencies {
     implementation "com.android.support:design:$support_ver"
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //implementation 'com.google.android.exoplayer:exoplayer:2.9.0'
     // ViewModel and LiveData
