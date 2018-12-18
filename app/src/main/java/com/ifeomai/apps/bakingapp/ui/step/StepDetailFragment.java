@@ -16,6 +16,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.RenderersFactory;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.ifeomai.apps.bakingapp.R;
 import com.ifeomai.apps.bakingapp.data.model.Step;
 import com.ifeomai.apps.bakingapp.ui.detail.StepsList;
@@ -27,15 +45,16 @@ import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
 
-public class StepDetailFragment extends Fragment //implements Player.EventListener {
+public class StepDetailFragment extends Fragment implements Player.EventListener
 {
+    private static final String STEP_VIDEO_AGENT = "STEP_VIDEO_AGENT";
     private static final String STEP_ARG = "step_arg";
     private static final String MEDIA_SESSION_TAG = "MEDIA_SESSION";
     private static final String EXTRA_PLAYBACK_STATE = "playback_state";
     private static final String EXTRA_CURRENT_POSITION = "current_position";
     private static final String STEP_POSITION = "step_position";
 
-   // private ExoPlayer exoPlayer;
+    private ExoPlayer exoPlayer;
     private MediaSessionCompat mediaSession;
     private PlaybackStateCompat.Builder playbackStateBuilder;
     private Step step;
@@ -44,8 +63,8 @@ public class StepDetailFragment extends Fragment //implements Player.EventListen
     @BindView(R.id.step_instruction_text_view)
     TextView stepTextView;
 
-//    @BindView(R.id.step_video_view)
-//    PlayerView exoPlayerView;
+    @BindView(R.id.step_video_view)
+    PlayerView exoPlayerView;
 
     @BindView(R.id.move_left_image_view)
     ImageView swipeLeftImageView;
@@ -96,19 +115,19 @@ public class StepDetailFragment extends Fragment //implements Player.EventListen
             long currentPosition = savedInstanceState.getLong(EXTRA_CURRENT_POSITION);
             int currentState = savedInstanceState.getInt(EXTRA_PLAYBACK_STATE);
 
-//            if (playbackStateBuilder != null && exoPlayer != null) {
-//                playbackStateBuilder.setState(currentState, currentPosition, 1f);
-//                exoPlayer.seekTo(currentPosition);
-//            }
+            if (playbackStateBuilder != null && exoPlayer != null) {
+                playbackStateBuilder.setState(currentState, currentPosition, 1f);
+                exoPlayer.seekTo(currentPosition);
+            }
         }
     }
 
     private void initUI() {
         if (step != null) {
             if (TextUtils.isEmpty(step.getVideoUrl())) {
-               // exoPlayerView.setVisibility(GONE);
+                exoPlayerView.setVisibility(GONE);
             } else {
-               // exoPlayerView.setDefaultArtwork( requireContext().getResources().getDrawable(R.drawable.exo_icon_play));
+                exoPlayerView.setDefaultArtwork( requireContext().getResources().getDrawable(R.drawable.exo_icon_play));
                 Uri videoUri = Uri.parse(step.getVideoUrl());
                 initialiseMediaSession();
                 initialisePlayer(videoUri);
@@ -186,19 +205,19 @@ public class StepDetailFragment extends Fragment //implements Player.EventListen
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-//        if (exoPlayer != null) {
-//            long currentPosition = exoPlayer.getCurrentPosition();
-//            int currentState = exoPlayer.getPlaybackState();
-//
-//            outState.putInt(EXTRA_PLAYBACK_STATE, currentState);
-//            outState.putLong(EXTRA_CURRENT_POSITION, currentPosition);
-//        }
+        if (exoPlayer != null) {
+            long currentPosition = exoPlayer.getCurrentPosition();
+            int currentState = exoPlayer.getPlaybackState();
+
+            outState.putInt(EXTRA_PLAYBACK_STATE, currentState);
+            outState.putLong(EXTRA_CURRENT_POSITION, currentPosition);
+        }
 
         super.onSaveInstanceState(outState);
     }
 
     private void initialisePlayer(Uri mediaUri) {
-  /*      if (exoPlayer == null) {
+        if (exoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             RenderersFactory renderersFactory = new DefaultRenderersFactory(requireContext());
@@ -209,14 +228,14 @@ public class StepDetailFragment extends Fragment //implements Player.EventListen
             exoPlayer.addListener(this);
 
             MediaSource mediaSource = new ExtractorMediaSource.Factory(
-                    new DefaultDataSourceFactory(requireContext(), Constants.STEP_VIDEO_AGENT))
+                    new DefaultDataSourceFactory(requireContext(), STEP_VIDEO_AGENT))
                     .createMediaSource(mediaUri);
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
-        }*/
+        }
     }
 
-/*    private void releasePlayer() {
+    private void releasePlayer() {
         if (exoPlayer != null) {
             exoPlayer.stop();
             exoPlayer.release();
@@ -297,6 +316,6 @@ public class StepDetailFragment extends Fragment //implements Player.EventListen
         public void onSkipToPrevious() {
             exoPlayer.seekTo(0);
         }
-    }*/
+    }
 }
 
