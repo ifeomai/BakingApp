@@ -14,21 +14,21 @@ import retrofit2.Response;
 public class RecipeRepo {
     private final String TAG = "Recipe Repo";
 
-                 public void loadRecipeList() {
-                     RecipeService recipeService = RecipeApi.getInstance();
+     public void loadRecipeList() {
+         RecipeService recipeService = RecipeApi.getInstance();
 
-                     Call<List<Recipe>> recipesCall = recipeService.getRecipes();
-                     recipesCall.enqueue(new Callback<List<Recipe>>() {
-                         @Override
-                         public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response) {
-                             List<Recipe> recipes = response.body();
-                             Log.d("Recipes: %s", recipes.toString());
-                         }
+         Call<List<Recipe>> recipesCall = recipeService.getRecipes();
+         recipesCall.enqueue(new Callback<List<Recipe>>() {
+             @Override
+             public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response) {
+                 List<Recipe> recipes = response.body();
+                 Log.d("Recipes: %s", recipes.toString());
+             }
 
-                         @Override
-                         public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t) {
-                             Log.e(TAG, "Problem fetching recipes");
-                         }
-                     });
-                 }
+             @Override
+             public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t) {
+                 Log.e(TAG, "Problem fetching recipes");
+             }
+         });
+     }
 }
