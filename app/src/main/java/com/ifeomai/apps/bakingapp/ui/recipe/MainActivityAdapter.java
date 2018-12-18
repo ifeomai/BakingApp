@@ -1,6 +1,7 @@
 package com.ifeomai.apps.bakingapp.ui.recipe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -9,16 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.ifeomai.apps.bakingapp.R;
 import com.ifeomai.apps.bakingapp.data.model.Recipe;
+import com.ifeomai.apps.bakingapp.ui.step.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainActivityViewHolder> {
@@ -82,6 +87,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         @Override
         public void onClick(View view) {
             Recipe recipe = recipes.get(getAdapterPosition());
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_RECIPE, recipe);
+            context.startActivity(intent);
 
         }
     }
