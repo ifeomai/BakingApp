@@ -139,8 +139,8 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
                 swipeRightImageView.setVisibility(GONE);
             }
 
-            //TODO: Add swipe Listeners
-            /*swipeLeftImageView.setOnClickListener(new View.OnClickListener() {
+            //DONE: Add swipe Listeners
+            swipeLeftImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     List<Step> steps = StepsList.getSteps();
@@ -170,7 +170,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
                                 .commit();
                     }
                 }
-            });*/
+            });
         }
     }
 
@@ -190,14 +190,14 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
 
         mediaSession.setPlaybackState(playbackStateBuilder.build());
 
-        //mediaSession.setCallback(new StepSessionCallback());
+        mediaSession.setCallback(new StepSessionCallback());
         mediaSession.setActive(true);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // releasePlayer();
+         releasePlayer();
         if (mediaSession != null) {
             mediaSession.setActive(false);
         }

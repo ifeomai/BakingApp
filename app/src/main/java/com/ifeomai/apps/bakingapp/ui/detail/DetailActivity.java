@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.ifeomai.apps.bakingapp.R;
 import com.ifeomai.apps.bakingapp.data.model.Recipe;
+import com.ifeomai.apps.bakingapp.ui.step.StepDetailFragment;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -44,19 +45,19 @@ public class DetailActivity extends AppCompatActivity {
                 }
 
                 if (getResources().getBoolean(R.bool.is_tablet)) {
-                    //TODO add the fragment for tablet
-                    /*Fragment stepFragment = fragmentManager.findFragmentById(R.id.step_fragment_container);
+                    //DONE: add the fragment for tablet
+                    Fragment stepFragment = fragmentManager.findFragmentById(R.id.details_container);
 
                     // Create step fragment if it doesn't already exist
                     if (stepFragment == null) {
                         fragmentManager.beginTransaction()
-                                .add(R.id.step_fragment_container,
-                                        StepDetailFragment.getInstance(recipe.getSteps().get(0), 0))
+                                .add(R.id.details_container, StepDetailFragment.getInstance(recipe.getSteps().get(0), 0))
                                 .commit();
 
-                        setTitle(recipe.getName());*/
+                        setTitle(recipe.getName());
                     }
                 }
             }
         }
     }
+}

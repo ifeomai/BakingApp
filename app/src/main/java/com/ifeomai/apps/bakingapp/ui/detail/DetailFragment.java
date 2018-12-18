@@ -93,7 +93,7 @@ public class DetailFragment extends Fragment implements StepsAdapter.StepListene
 
     @Override
     public void onStepClick(int itemPosition) {
-        //TODO : Specify what happens on item click
+        //DONE : Specify what happens on item click
         if (requireContext().getResources().getBoolean(R.bool.is_tablet)) {
             // Load step into fragment
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
