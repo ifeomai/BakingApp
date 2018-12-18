@@ -1,4 +1,4 @@
-package com.ifeomai.apps.bakingapp.ui.step;
+package com.ifeomai.apps.bakingapp.ui.detail;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

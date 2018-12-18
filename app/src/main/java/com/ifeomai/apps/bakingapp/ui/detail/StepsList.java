@@ -1,4 +1,4 @@
-package com.ifeomai.apps.bakingapp.ui.step;
+package com.ifeomai.apps.bakingapp.ui.detail;
 
 import com.ifeomai.apps.bakingapp.data.model.Step;
 

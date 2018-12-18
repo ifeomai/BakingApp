@@ -10,20 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.ifeomai.apps.bakingapp.R;
 import com.ifeomai.apps.bakingapp.data.model.Recipe;
-import com.ifeomai.apps.bakingapp.ui.step.DetailActivity;
+import com.ifeomai.apps.bakingapp.ui.detail.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.widget.Toast.LENGTH_SHORT;
 
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainActivityViewHolder> {
