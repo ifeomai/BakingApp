@@ -4,6 +4,8 @@ import android.appwidget.AppWidgetManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.ifeomai.apps.bakingapp.data.model.Ingredient;
 import com.ifeomai.apps.bakingapp.data.model.Recipe;
 import com.ifeomai.apps.bakingapp.ui.recipe.MainActivity;
 import com.ifeomai.apps.bakingapp.ui.recipe.MainActivityViewModel;
+import com.ifeomai.apps.bakingapp.util.BakingUtils;
 
 import java.util.List;
 
@@ -93,21 +96,31 @@ public class BakingAppConfigActivity extends AppCompatActivity implements Recipe
         StringBuilder ingredientsStringBuilder = new StringBuilder();
         for (Ingredient ingredient : ingredientList) {
             ingredientsStringBuilder.append(
-                    String.format("- %s (%s %s)\n",
+                    String.format("- %s ->%s %s)\n",
                             ingredient.getName().substring(0, 1).toUpperCase() +
                                     ingredient.getName().substring(1),
                             ingredient.getQuantity(),
                             ingredient.getMeasure())
             );
         }
-        views.setTextViewText(R.id.appwidget_text, ingredientsStringBuilder.toString());
+        // Get a instance of SharedPreferences
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // Get the editor object
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        // Get the ingredient list and convert the list to string
+        String ingredientString = BakingUtils.toIngredientString(ingredientList);
+
+        // Save the string used for displaying in the app widget
+        editor.putString(getString(R.string.pref_ingredient_list_key), ingredientString);
+        editor.apply();
+
+        //TODO: Default set value to textview
+        //views.setTextViewText(R.id.appwidget_text, ingredientsStringBuilder.toString());
         AppWidgetManager.getInstance(this).updateAppWidget(widgetId, views);
-
         Intent intent = new Intent();
         intent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
         setResult(RESULT_OK, intent);
-
         finish();
     }
 }

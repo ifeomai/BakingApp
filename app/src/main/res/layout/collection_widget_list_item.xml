@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#09C"
+    android:orientation="horizontal"
+    android:padding="@dimen/widget_margin">
+
+    <!-- Display quantity of the ingredient-->
+    <TextView
+        android:id="@+id/widget_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/margin_activity_small"
+        android:layout_marginStart="@dimen/margin_activity_small"
+        android:padding="@dimen/margin_activity_small"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        tools:text="2" />
+
+    <!-- Display measure of the ingredient-->
+    <TextView
+        android:id="@+id/widget_measure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="@dimen/margin_activity_small"
+        android:paddingTop="@dimen/margin_activity_small"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        tools:text="CUP" />
+
+    <!-- Display ingredient -->
+    <TextView
+        android:id="@+id/widget_ingredient"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/margin_activity_small"
+        android:paddingEnd="@dimen/margin_activity"
+        android:paddingLeft="@dimen/margin_activity"
+        android:paddingRight="@dimen/margin_activity"
+        android:paddingStart="@dimen/margin_activity"
+        android:paddingTop="@dimen/margin_activity_small"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        tools:text="Graham Cracker crumbs" />
+
+</LinearLayout>

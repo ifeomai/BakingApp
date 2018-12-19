@@ -10,7 +10,11 @@
     <string name="step_icon_description">step icon</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="loading">Loading widget</string>
     <string name="title_activity_baking_app_config">BakingAppConfigActivity</string>
     <string name="select_recipe_label">Select recipe to show in widget</string>
+
+    <!-- Key name for storing the list of ingredients in SharedPreferences -->
+    <string name="pref_ingredient_list_key">pref_ingredient_list</string>
 
 </resources>
