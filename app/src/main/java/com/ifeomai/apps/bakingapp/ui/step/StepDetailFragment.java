@@ -1,6 +1,5 @@
 package com.ifeomai.apps.bakingapp.ui.step;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +27,7 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -37,6 +36,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.ifeomai.apps.bakingapp.R;
 import com.ifeomai.apps.bakingapp.data.model.Step;
 import com.ifeomai.apps.bakingapp.ui.detail.StepsList;
@@ -55,6 +55,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private static final String MEDIA_SESSION_TAG = "MEDIA_SESSION";
     private static final String EXTRA_PLAYBACK_STATE = "playback_state";
     private static final String EXTRA_CURRENT_POSITION = "current_position";
+    private static final String KEY_AUTO_PLAY = "getPlayWhenReady";
     private static final String STEP_POSITION = "step_position";
 
     private ExoPlayer exoPlayer;
@@ -62,6 +63,7 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
     private PlaybackStateCompat.Builder playbackStateBuilder;
     private Step step;
     private int position;
+    private boolean startAutoPlay;
 
     @BindView(R.id.step_instruction_text_view)
     TextView stepTextView;
@@ -140,11 +142,17 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
         if (savedInstanceState != null) {
             long currentPosition = savedInstanceState.getLong(EXTRA_CURRENT_POSITION);
             int currentState = savedInstanceState.getInt(EXTRA_PLAYBACK_STATE);
+            startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
+
 
             if (playbackStateBuilder != null && exoPlayer != null) {
                 playbackStateBuilder.setState(currentState, currentPosition, 1f);
                 exoPlayer.seekTo(currentPosition);
             }
+            else {
+                startAutoPlay = true;
+            }
+
         }
     }
 
@@ -219,13 +227,54 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
         mediaSession.setCallback(new StepSessionCallback());
         mediaSession.setActive(true);
     }
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            if (exoPlayerView != null) {
+                exoPlayerView.onPause();
+                if (mediaSession != null) {
+                    mediaSession.setActive(false);
+                }
+            }
+            releasePlayer();
+        }
+    }
     @Override
     public void onStop() {
         super.onStop();
-         releasePlayer();
-        if (mediaSession != null) {
-            mediaSession.setActive(false);
+        if (com.google.android.exoplayer2.util.Util.SDK_INT > 23) {
+            if (exoPlayerView != null) {
+                exoPlayerView.onPause();
+                if (mediaSession != null) {
+                    mediaSession.setActive(false);
+                }
+            }
+            releasePlayer();
+        }
+    }
+
+
+    @Override
+
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initialisePlayer(Uri.parse(step.getVideoUrl()));
+            if (exoPlayerView != null) {
+                exoPlayerView.onResume();
+            }
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Util.SDK_INT <= 23 || exoPlayer == null) {
+            // initialiseMediaSession();
+            initialisePlayer(Uri.parse(step.getVideoUrl()));
+            if (exoPlayerView != null) {
+                exoPlayerView.onResume();
+            }
         }
     }
 
@@ -237,10 +286,13 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
 
             outState.putInt(EXTRA_PLAYBACK_STATE, currentState);
             outState.putLong(EXTRA_CURRENT_POSITION, currentPosition);
+            outState.putBoolean(KEY_AUTO_PLAY, startAutoPlay);
         }
 
         super.onSaveInstanceState(outState);
     }
+
+
 
     private void initialisePlayer(Uri mediaUri) {
         if (exoPlayer == null) {
@@ -252,12 +304,13 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
                     requireContext(), renderersFactory, trackSelector, loadControl);
             exoPlayerView.setPlayer(exoPlayer);
             exoPlayer.addListener(this);
+            exoPlayer.setPlayWhenReady(startAutoPlay);
 
             MediaSource mediaSource = new ExtractorMediaSource.Factory(
                     new DefaultDataSourceFactory(requireContext(), STEP_VIDEO_AGENT))
                     .createMediaSource(mediaUri);
             exoPlayer.prepare(mediaSource);
-            exoPlayer.setPlayWhenReady(true);
+            //exoPlayer.setPlayWhenReady(true);
         }
     }
 
@@ -309,7 +362,11 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-
+        if (isBehindLiveWindow(error)) {
+            startAutoPlay = true;
+        } else {
+            startAutoPlay=exoPlayer.getPlayWhenReady();
+        }
     }
 
     @Override
@@ -327,6 +384,19 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
 
     }
 
+    private static boolean isBehindLiveWindow(ExoPlaybackException e) {
+        if (e.type != ExoPlaybackException.TYPE_SOURCE) {
+            return false;
+        }
+        Throwable cause = e.getSourceException();
+        while (cause != null) {
+            if (cause instanceof BehindLiveWindowException) {
+                return true;
+            }
+            cause = cause.getCause();
+        }
+        return false;
+    }
     private class StepSessionCallback extends MediaSessionCompat.Callback {
         @Override
         public void onPlay() {
