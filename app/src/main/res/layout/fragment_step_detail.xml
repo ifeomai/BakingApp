@@ -16,7 +16,9 @@
             android:src="@mipmap/ic_launcher"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:fastforward_increment="1000"
+            app:rewind_increment="1000"/>
 
         <TextView
             android:id="@+id/step_instruction_text_view"
