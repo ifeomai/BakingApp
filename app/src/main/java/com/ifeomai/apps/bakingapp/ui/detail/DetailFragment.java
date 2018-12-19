@@ -102,7 +102,7 @@ public class DetailFragment extends Fragment implements StepsAdapter.StepListene
                     .getInstance(recipe.getSteps().get(itemPosition), itemPosition);
 
             fragmentManager.beginTransaction()
-                    .replace(R.id.activity_step_fragment_container, stepFragment)
+                    .replace(R.id.step_fragment_container, stepFragment)
                     .commit();
         } else {
             Intent intent = StepActivity.newIntent(requireContext(), itemPosition, recipe.getName());

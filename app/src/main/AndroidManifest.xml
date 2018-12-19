@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ifeomai.apps.bakingapp">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--This is supposed to help with exoplayer full screen android configChanges-->
     <application
+
+        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

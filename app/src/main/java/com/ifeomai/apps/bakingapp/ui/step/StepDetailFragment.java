@@ -1,10 +1,12 @@
 package com.ifeomai.apps.bakingapp.ui.step;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -13,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -105,6 +108,29 @@ public class StepDetailFragment extends Fragment implements Player.EventListener
         initUI();
 
         return v;
+    }
+
+    // if a phone and in landscape make video full screen
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Checking the orientation of the screen
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) exoPlayerView.getLayoutParams();
+        params.width=params.MATCH_PARENT;
+        if ((newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) && !(requireContext().getResources().getBoolean(R.bool.is_tablet))) {
+            //First Hide other objects (listview or recyclerview or controls), better hide them using Gone.
+            stepTextView.setVisibility(GONE);
+            swipeRightImageView.setVisibility(GONE);
+            swipeLeftImageView.setVisibility(GONE);
+            params.height=params.MATCH_PARENT;
+            exoPlayerView.setLayoutParams(params);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            stepTextView.setVisibility(View.VISIBLE);
+            swipeRightImageView.setVisibility(View.VISIBLE);
+            swipeLeftImageView.setVisibility(View.VISIBLE);
+            params.height =100;
+            exoPlayerView.setLayoutParams(params);
+        }
     }
 
     @Override

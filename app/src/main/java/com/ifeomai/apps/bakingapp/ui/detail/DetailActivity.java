@@ -46,12 +46,12 @@ public class DetailActivity extends AppCompatActivity {
 
                 if (getResources().getBoolean(R.bool.is_tablet)) {
                     //DONE: add the fragment for tablet
-                    Fragment stepFragment = fragmentManager.findFragmentById(R.id.details_container);
+                    Fragment stepFragment = fragmentManager.findFragmentById(R.id.step_fragment_container);
 
                     // Create step fragment if it doesn't already exist
                     if (stepFragment == null) {
                         fragmentManager.beginTransaction()
-                                .add(R.id.details_container, StepDetailFragment.getInstance(recipe.getSteps().get(0), 0))
+                                .add(R.id.step_fragment_container, StepDetailFragment.getInstance(recipe.getSteps().get(0), 0))
                                 .commit();
 
                         setTitle(recipe.getName());

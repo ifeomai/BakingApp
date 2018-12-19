@@ -12,7 +12,7 @@
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/step_video_view"
             android:layout_width="0dp"
-            android:layout_height="209dp"
+            android:layout_height="@dimen/exo_height"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
