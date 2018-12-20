@@ -16,5 +16,28 @@
 
     <!-- Key name for storing the list of ingredients in SharedPreferences -->
     <string name="pref_ingredient_list_key">pref_ingredient_list</string>
+    <!-- String for the type of the media file -->
+    <string name="mp4">mp4</string>
+
+    <!-- Strings for Notifications -->
+    <string name="pause">pause</string>
+    <string name="play">play</string>
+    <string name="rewind">rewind</string>
+    <string name="fast_forward">fast forward</string>
+    <string name="notification_title">What\'s your cooking style?</string>
+    <string name="notification_text">Check out our recipes.</string>
+    <string name="baking_notification_channel_name">Primary</string>
+
+    <string name="step">Step\u0020</string>
+    <string name="servings_label">Servings</string>
+    <string name="ingredients_label">Ingredients</string>
+    <string name="steps_label">Steps</string>
+    <string name="question_mark">�</string>
+    <string name="degree">\u00b0</string>
+    <string name="space">\u0020</string>
+    <string name="of">of</string>
+    <string name="period">.</string>
+    <string name="open_parenthesis">(</string>
+    <string name="close_parenthesis">)</string>
 
 </resources>
