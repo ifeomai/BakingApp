@@ -115,12 +115,20 @@ public class BakingAppConfigActivity extends AppCompatActivity implements Recipe
         editor.putString(getString(R.string.pref_ingredient_list_key), ingredientString);
         editor.apply();
 
-        //TODO: Default set value to textview
+        /*//TODO: Default set value to textview
         //views.setTextViewText(R.id.appwidget_text, ingredientsStringBuilder.toString());
-        AppWidgetManager.getInstance(this).updateAppWidget(widgetId, views);
+        AppWidgetManager.getInstance(this).updateAppWidget(widgetId, views);*/
         Intent intent = new Intent();
         intent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
         setResult(RESULT_OK, intent);
+        // Build/Update widget
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+        // This is equivalent to your ChecksWidgetProvider.updateAppWidget()
+        appWidgetManager.updateAppWidget(widgetId,
+                BakingWidgetProvider.getIngredientListRemoteView(getApplicationContext(),
+                        widgetId));
+        // Updates the collection view, not necessary the first time
+        appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.appwidget_grid);
         finish();
     }
 }

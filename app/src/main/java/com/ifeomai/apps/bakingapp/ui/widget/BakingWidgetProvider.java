@@ -14,7 +14,7 @@ import com.ifeomai.apps.bakingapp.R;
 public class BakingWidgetProvider extends AppWidgetProvider {
 
 
-    private static RemoteViews getIngredientListRemoteView(Context context, int appWidgetId) {
+    public static RemoteViews getIngredientListRemoteView(Context context, int appWidgetId) {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget_provider);
 
@@ -25,8 +25,8 @@ public class BakingWidgetProvider extends AppWidgetProvider {
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         views.setRemoteAdapter(R.id.appwidget_grid, intent);
 
-        /*// Handle empty view
-        views.setEmptyView(R.id.widget_list_view, R.id.widget_empty_view);*/
+        // Handle empty view
+        views.setEmptyView(R.id.appwidget_grid, R.id.empty_view);
         return views;
     }
 
